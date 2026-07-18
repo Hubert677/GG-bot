@@ -36,7 +36,6 @@ cp .env.example .env
 5. Wstaw token bota do `.env`:
 ```
 DISCORD_TOKEN=your_discord_token_here
-PREFIX=!
 ```
 
 6. Uruchom bota:
@@ -53,34 +52,30 @@ python main.py
 
 ## Komendy
 
-### � Prefix Komendy (!)
+**Wszystkie komendy są slash komendami** (`/`)
 
-#### 📌 Ogólne
-- `!ping` - Sprawdź latencję bota
-- `!help` - Pokaż listę wszystkich komend
-- `!info` - Informacje o bocie
-
-#### 🎫 Tickety
-- `!create-ticket [powód]` - Stwórz nowy ticket
-- `!close-ticket` - Zamknij ticket **(ADMIN)**
-
-#### 👋 Powitania/Pożegnania
-- `!set-welcome [wiadomość]` - Ustaw wiadomość powitania **(ADMIN)**
-- `!set-goodbye [wiadomość]` - Ustaw wiadomość pożegnania **(ADMIN)**
-
-#### 🔨 Moderacja
-- `!ban @user [powód]` - Zbanuj użytkownika **(ADMIN)**
-- `!kick @user [powód]` - Wyrzuć użytkownika **(ADMIN)**
-- `!warn @user [powód]` - Ostrzeż użytkownika **(ADMIN)**
-- `!clear [ilość]` - Usuń wiadomości **(ADMIN)**
-
-### ⚡ Slash Komendy (/)
-
+### 📌 Ogólne
 - `/ping` - Sprawdź latencję bota
+- `/help` - Pokaż listę wszystkich komend
+- `/info` - Informacje o bocie
 - `/user [użytkownik]` - Informacje o użytkowniku
 - `/server` - Informacje o serwerze
 - `/avatar [użytkownik]` - Pokaż avatar użytkownika
 - `/stats` - Statystyki serwera
+
+### 🎫 Tickety
+- `/create-ticket [powód]` - Stwórz nowy ticket
+- `/close-ticket` - Zamknij ticket (ADMIN)
+
+### 👋 Powitania/Pożegnania
+- `/set-welcome [wiadomość]` - Ustaw wiadomość powitania (ADMIN)
+- `/set-goodbye [wiadomość]` - Ustaw wiadomość pożegnania (ADMIN)
+
+### 🔨 Moderacja
+- `/ban [użytkownik] [powód]` - Zbanuj użytkownika (ADMIN)
+- `/kick [użytkownik] [powód]` - Wyrzuć użytkownika (ADMIN)
+- `/warn [użytkownik] [powód]` - Ostrzeż użytkownika (ADMIN)
+- `/clear [ilość]` - Usuń wiadomości (ADMIN)
 
 ## Struktura projektu
 
@@ -89,14 +84,11 @@ python main.py
 ├── main.py                      # Główny plik bota
 ├── config.py                    # Konfiguracja
 ├── cogs/                        # Folder z komendami
-│   ├── ping.py                  # Komenda ping
-│   ├── info.py                  # Komendy help, info
-│   ├── slash_commands.py        # Slash komendy (/)
+│   ├── info.py                  # Komendy help, info, ping
+│   ├── slash_commands.py        # Dodatkowe slash komendy
 │   ├── welcome.py               # Powitania/Pożegnania
 │   ├── tickets.py               # System ticketów
 │   └── moderation.py            # Ban, kick, warn, clear
-├── welcome_config.json          # Konfiguracja powitań (auto)
-├── tickets_config.json          # Konfiguracja ticketów (auto)
 ├── requirements.txt             # Zależności
 ├── .env.example                 # Template zmiennych
 ├── Procfile                     # Dla Render
@@ -107,4 +99,4 @@ python main.py
 
 Tworz nowe pliki w folderze `cogs/` i implementuj komendę jako Cog.
 
-Przykład w `cogs/ping.py`
+Wszystkie komendy powinny używać `@app_commands.command()` zamiast `@commands.command()`.

@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord import app_commands
 import json
 import os
 
@@ -20,34 +21,34 @@ class Welcome(commands.Cog):
         with open(self.config_file, "w") as f:
             json.dump(self.config, f, indent=4)
 
-    def is_admin(self, ctx):
-        return ctx.author.guild_permissions.administrator
+    def is_admin(self, interaction: discord.Interaction):
+        return interaction.user.guild_permissions.administrator
 
-    @commands.command(name='set-welcome')
-    async def set_welcome(self, ctx, *, message):
+    @app_commands.command(name='set-welcome', description='Ustaw wiadomość powitania dla nowych użytkowników (ADMIN)')
+    async def set_welcome(self, interaction: discord.Interaction, message: str):
         """Ustaw wiadomość powitania dla nowych użytkowników (ADMIN)"""
-        if not self.is_admin(ctx):
-            await ctx.send("❌ Brak uprawnień! Tylko admin może to robić.")
+        if not self.is_admin(interaction):
+            await interaction.response.send_message("❌ Brak uprawnień! Tylko admin może to robić.", ephemeral=True)
             return
         
-        guild_id = str(ctx.guild.id)
+        guild_id = str(interaction.guild.id)
         self.config[guild_id] = self.config.get(guild_id, {})
         self.config[guild_id]["welcome_message"] = message
         self.save_config()
-        await ctx.send(f"✅ Wiadomość powitania ustawiona:\n`{message}`")
+        await interaction.response.send_message(f"✅ Wiadomość powitania ustawiona:\n`{message}`")
 
-    @commands.command(name='set-goodbye')
-    async def set_goodbye(self, ctx, *, message):
+    @app_commands.command(name='set-goodbye', description='Ustaw wiadomość pożegnania dla użytkowników (ADMIN)')
+    async def set_goodbye(self, interaction: discord.Interaction, message: str):
         """Ustaw wiadomość pożegnania dla użytkowników (ADMIN)"""
-        if not self.is_admin(ctx):
-            await ctx.send("❌ Brak uprawnień! Tylko admin może to robić.")
+        if not self.is_admin(interaction):
+            await interaction.response.send_message("❌ Brak uprawnień! Tylko admin może to robić.", ephemeral=True)
             return
         
-        guild_id = str(ctx.guild.id)
+        guild_id = str(interaction.guild.id)
         self.config[guild_id] = self.config.get(guild_id, {})
         self.config[guild_id]["goodbye_message"] = message
         self.save_config()
-        await ctx.send(f"✅ Wiadomość pożegnania ustawiona:\n`{message}`")
+        await interaction.response.send_message(f"✅ Wiadomość pożegnania ustawiona:\n`{message}`")
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -71,3 +72,4 @@ class Welcome(commands.Cog):
 
 async def setup(bot):
     await bot.add_cog(Welcome(bot))
+

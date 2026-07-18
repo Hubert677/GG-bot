@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord import app_commands
 import json
 import os
 
@@ -20,58 +21,59 @@ class Tickets(commands.Cog):
         with open(self.config_file, "w") as f:
             json.dump(self.config, f, indent=4)
 
-    def is_admin(self, ctx):
-        return ctx.author.guild_permissions.administrator
+    def is_admin(self, interaction: discord.Interaction):
+        return interaction.user.guild_permissions.administrator
 
-    @commands.command(name='create-ticket')
-    async def create_ticket(self, ctx, *, reason="Brak opisu"):
+    @app_commands.command(name='create-ticket', description='Stwórz nowy ticket')
+    async def create_ticket(self, interaction: discord.Interaction, reason: str = "Brak opisu"):
         """Stwórz nowy ticket"""
-        guild = ctx.guild
+        guild = interaction.guild
         
         # Sprawdź czy już ma otwarty ticket
-        tickets = [ch for ch in guild.text_channels if ch.name.startswith(f"ticket-{ctx.author.id}")]
+        tickets = [ch for ch in guild.text_channels if ch.name.startswith(f"ticket-{interaction.user.id}")]
         if tickets:
-            await ctx.send(f"❌ Masz już otwarty ticket! {tickets[0].mention}")
+            await interaction.response.send_message(f"❌ Masz już otwarty ticket! {tickets[0].mention}", ephemeral=True)
             return
 
         # Stwórz channel
         try:
             ticket_channel = await guild.create_text_channel(
-                name=f"ticket-{ctx.author.id}",
-                topic=f"Ticket od {ctx.author} - {reason}"
+                name=f"ticket-{interaction.user.id}",
+                topic=f"Ticket od {interaction.user} - {reason}"
             )
             
             # Ustaw permisje
-            await ticket_channel.set_permissions(ctx.author, read_messages=True, send_messages=True)
+            await ticket_channel.set_permissions(interaction.user, read_messages=True, send_messages=True)
             
             embed = discord.Embed(
                 title="🎫 Nowy Ticket",
-                description=f"**Użytkownik:** {ctx.author.mention}\n**Powód:** {reason}",
+                description=f"**Użytkownik:** {interaction.user.mention}\n**Powód:** {reason}",
                 color=discord.Color.green()
             )
             await ticket_channel.send(embed=embed)
-            await ctx.send(f"✅ Ticket stworzony! {ticket_channel.mention}")
+            await interaction.response.send_message(f"✅ Ticket stworzony! {ticket_channel.mention}")
         except Exception as e:
-            await ctx.send(f"❌ Błąd przy tworzeniu ticketa: {e}")
+            await interaction.response.send_message(f"❌ Błąd przy tworzeniu ticketa: {e}", ephemeral=True)
 
-    @commands.command(name='close-ticket')
-    async def close_ticket(self, ctx):
+    @app_commands.command(name='close-ticket', description='Zamknij ticket (ADMIN)')
+    async def close_ticket(self, interaction: discord.Interaction):
         """Zamknij ticket (ADMIN)"""
-        if not self.is_admin(ctx):
-            await ctx.send("❌ Brak uprawnień! Tylko admin może to robić.")
+        if not self.is_admin(interaction):
+            await interaction.response.send_message("❌ Brak uprawnień! Tylko admin może to robić.", ephemeral=True)
             return
 
-        if not ctx.channel.name.startswith("ticket-"):
-            await ctx.send("❌ To nie jest channel ticketa!")
+        if not interaction.channel.name.startswith("ticket-"):
+            await interaction.response.send_message("❌ To nie jest channel ticketa!", ephemeral=True)
             return
 
         embed = discord.Embed(
             title="🎫 Ticket Zamknięty",
-            description=f"Ticket zamknięty przez {ctx.author.mention}",
+            description=f"Ticket zamknięty przez {interaction.user.mention}",
             color=discord.Color.red()
         )
-        await ctx.send(embed=embed)
-        await ctx.channel.delete(reason="Ticket zamknięty")
+        await interaction.response.send_message(embed=embed)
+        await interaction.channel.delete(reason="Ticket zamknięty")
 
 async def setup(bot):
     await bot.add_cog(Tickets(bot))
+

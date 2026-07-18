@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from config import DISCORD_TOKEN, PREFIX
+from config import DISCORD_TOKEN
 import os
 import asyncio
 
@@ -8,8 +8,8 @@ import asyncio
 intents = discord.Intents.default()
 intents.message_content = True
 
-# Bot
-bot = commands.Bot(command_prefix=PREFIX, intents=intents)
+# Bot (bez prefiksu - tylko slash komendy)
+bot = commands.Bot(command_prefix="!", intents=intents)
 
 @bot.event
 async def on_ready():
@@ -37,3 +37,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+

@@ -1,13 +1,14 @@
 import discord
 from discord.ext import commands
+from discord import app_commands
 from datetime import datetime
 
 class Info(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name='help')
-    async def help(self, ctx):
+    @app_commands.command(name="help", description="Pokaż listę wszystkich komend")
+    async def help(self, interaction: discord.Interaction):
         """Pokaż listę komend"""
         embed = discord.Embed(
             title="📚 Komendy Bota",
@@ -17,44 +18,33 @@ class Info(commands.Cog):
         
         embed.add_field(
             name="📌 Ogólne",
-            value="`!ping` - Sprawdź latencję\n`!help` - Lista komend\n`!info` - Info o bocie",
+            value="`/ping` - Sprawdź latencję\n`/help` - Lista komend\n`/info` - Info o bocie\n`/user` - Info o użytkowniku\n`/server` - Info o serwerze\n`/avatar` - Avatar użytkownika\n`/stats` - Statystyki serwera",
             inline=False
         )
         
         embed.add_field(
             name="🎫 Tickety",
-            value="`!create-ticket [powód]` - Stwórz ticket\n`!close-ticket` - Zamknij ticket (ADMIN)",
+            value="`/create-ticket` - Stwórz ticket\n`/close-ticket` - Zamknij ticket (ADMIN)",
             inline=False
         )
         
         embed.add_field(
             name="👋 Powitania/Pożegnania",
-            value="`!set-welcome [wiadomość]` - Ustaw powitanie (ADMIN)\n`!set-goodbye [wiadomość]` - Ustaw pożegnanie (ADMIN)",
+            value="`/set-welcome` - Ustaw powitanie (ADMIN)\n`/set-goodbye` - Ustaw pożegnanie (ADMIN)",
             inline=False
         )
         
         embed.add_field(
             name="🔨 Moderacja",
-            value="`!ban @user [powód]` - Zbanuj (ADMIN)\n`!kick @user [powód]` - Wyrzuć (ADMIN)\n`!warn @user [powód]` - Ostrzeż (ADMIN)\n`!clear [ilość]` - Usuń wiadomości (ADMIN)",
+            value="`/ban` - Zbanuj (ADMIN)\n`/kick` - Wyrzuć (ADMIN)\n`/warn` - Ostrzeż (ADMIN)\n`/clear` - Usuń wiadomości (ADMIN)",
             inline=False
         )
         
-        embed.set_footer(text="Wpisz !info aby dowiedzieć się więcej o bocie")
-        await ctx.send(embed=embed)
+        embed.set_footer(text="Wpisz /info aby dowiedzieć się więcej o bocie")
+        await interaction.response.send_message(embed=embed)
 
-    @commands.command(name='ping')
-    async def ping(self, ctx):
-        """Sprawdź latencję bota"""
-        latency = round(self.bot.latency * 1000)
-        embed = discord.Embed(
-            title="🏓 Pong!",
-            description=f"Latencja: `{latency}ms`",
-            color=discord.Color.green()
-        )
-        await ctx.send(embed=embed)
-
-    @commands.command(name='info')
-    async def info(self, ctx):
+    @app_commands.command(name="info", description="Informacje o bocie")
+    async def info(self, interaction: discord.Interaction):
         """Informacje o bocie"""
         embed = discord.Embed(
             title="🤖 GG-Bot",
@@ -63,13 +53,14 @@ class Info(commands.Cog):
         )
         
         embed.add_field(name="👨‍💻 Autor", value="Hubert677", inline=False)
-        embed.add_field(name="📦 Wersja", value="1.0", inline=False)
+        embed.add_field(name="📦 Wersja", value="2.0", inline=False)
         embed.add_field(name="🔗 GitHub", value="[GG-bot](https://github.com/Hubert677/GG-bot)", inline=False)
-        embed.add_field(name="⚙️ Prefix", value="`!`", inline=False)
+        embed.add_field(name="⚙️ Typ komend", value="Slash komendy (`/`)", inline=False)
         embed.add_field(name="📅 Data uruchomienia", value=f"<t:{int(datetime.now().timestamp())}:F>", inline=False)
         
-        embed.set_footer(text="Wpisz !help aby zobaczyć wszystkie komendy")
-        await ctx.send(embed=embed)
+        embed.set_footer(text="Wpisz /help aby zobaczyć wszystkie komendy")
+        await interaction.response.send_message(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Info(bot))
+
