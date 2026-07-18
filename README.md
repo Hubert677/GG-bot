@@ -50,7 +50,7 @@ python main.py
 3. Ustaw zmienne środowiskowe na Render (Settings → Environment)
 4. Deploy!
 
-## Komendy - Pełna Lista
+## Komendy - Pełna Lista (45+)
 
 **Wszystkie komendy są slash komendami** (`/`)
 
@@ -74,6 +74,16 @@ python main.py
 - `/joke` - Losowy kawał 😂
 - `/rps [papier|kamień|nożyce]` - Papier, Kamień, Nożyce 🎮
 
+### 💰 Ekonomia
+- `/balance [użytkownik]` - Sprawdź portfel 💵
+- `/work` - Pracuj i zarabiaj (15-50 💵, cooldown 30m) 💼
+- `/daily` - Bonus codzienny (100 💵, cooldown 24h) 🎁
+- `/shop` - Pokaż sklep 🛒
+- `/buy [item]` - Kup przedmiot (jabłko, burger, pizza, sushi, diament, złoto)
+- `/inventory` - Pokaż swoje przedmioty 📦
+- `/gamble [stawka]` - Graj w papier-kamień-nożyce 🎰
+- `/transfer [użytkownik] [kwota]` - Prześlij pieniądze 💸
+
 ### 🏷️ Zarządzanie Rolami
 - `/role-add [użytkownik] [rola]` - Dodaj rolę (ADMIN)
 - `/role-remove [użytkownik] [rola]` - Usuń rolę (ADMIN)
@@ -86,8 +96,9 @@ python main.py
 - `/topstats` - Top 5 aktywnych
 - `/addxp [użytkownik] [ilość]` - Dodaj XP (ADMIN)
 
-### 🎫 System Ticketów
-- `/create-ticket [powód]` - Stwórz nowy ticket
+### 🎫 System Ticketów (Rozbudowany)
+- `/create-ticket [typ] [powód]` - Stwórz ticket
+  - **Typy ticketów:** 🐛 Bug Report, ✨ Feature Request, 🆘 Support/Pomoc
 - `/close-ticket` - Zamknij ticket (ADMIN)
 
 ### 👋 Powitania/Pożegnania
@@ -100,6 +111,7 @@ python main.py
 - `/warn [użytkownik] [powód]` - Ostrzeż użytkownika (ADMIN)
 - `/clear [ilość]` - Usuń wiadomości (ADMIN)
 - `/slowmode [sekundy]` - Ustaw tryb powolny kanału (ADMIN)
+
 
 ## Struktura projektu
 
@@ -129,19 +141,64 @@ Tworz nowe pliki w folderze `cogs/` i implementuj komendę jako Cog.
 
 Wszystkie komendy powinny używać `@app_commands.command()` zamiast `@commands.command()`.
 
-## Funkcje
+## Struktura projektu
 
-✅ **35+ slash komend**
-✅ **System ticketów** - użytkownicy mogą tworzyć tickety  
-✅ **Zarządzanie rolami** - admini mogą zarządzać rolami użytkowników
+```
+.
+├── main.py                      # Główny plik bota
+├── config.py                    # Konfiguracja
+├── cogs/                        # Folder z komendami
+│   ├── info.py                  # Komendy help, info, ping
+│   ├── slash_commands.py        # Dodatkowe komendy info
+│   ├── fun.py                   # Zabawy (8ball, dice, coin, joke, rps)
+│   ├── economy.py               # Ekonomia (10 komend)
+│   ├── roles.py                 # Zarządzanie rolami
+│   ├── stats.py                 # Statystyki i XP
+│   ├── extra.py                 # Ekstra komendy
+│   ├── welcome.py               # Powitania/Pożegnania
+│   ├── tickets.py               # System ticketów (3 typy)
+│   └── moderation.py            # Ban, kick, warn, clear, slowmode
+├── requirements.txt             # Zależności
+├── .env.example                 # Template zmiennych
+├── Procfile                     # Dla Render
+└── README.md                    # Ten plik
+```
+
+## Główne Funkcje
+
+✅ **45+ slash komend** - pełny zestaw funkcji
+✅ **Ekonomia** - zarabianie, sklep, przedmioty, transfer, gry o pieniądze
+✅ **System ticketów z typami** - 3 rodzaje (Bug, Feature, Support)
+✅ **Zarządzanie rolami** - admini mogą zarządzać rolami
 ✅ **Statystyki & XP** - leaderboard, profile, ranking
-✅ **Zabawy & Gry** - 8ball, kostki, monety, kawały
+✅ **Zabawy & Gry** - 8ball, kostki, monety, kawały, papier-kamień-nożyce
 ✅ **Powitania/Pożegnania** - automatyczne wiadomości
 ✅ **Moderacja** - ban, kick, warn, clear, slowmode
 ✅ **Informacje** - detale o serwerze, użytkownikach, bocie
+
+## System Ekonomii
+
+**Zarabianie pieniędzy:**
+- `/work` - Pracuj (15-50 💵, cooldown 30m)
+- `/daily` - Bonus codzienny (100 💵, cooldown 24h)
+- `/gamble [stawka]` - Graj w papier-kamień-nożyce
+
+**Wydawanie pieniędzy:**
+- `/shop` - Sklep z przedmiotami
+- `/buy [item]` - Kupuj przedmioty (jabłko, burger, pizza, sushi, diament, złoto)
+- `/transfer [użytkownik] [kwota]` - Prześlij pieniądze
+
+**Sprawdzanie:**
+- `/balance` - Sprawdź saldo
+- `/inventory` - Sprawdź przedmioty
 
 ## Wymagania
 
 - Python 3.8+
 - discord.py 2.4.0+
 - python-dotenv
+
+## Status
+
+✨ **v4.0** - Ekonomia + System ticketów z typami (45+ komend)
+
