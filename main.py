@@ -3,6 +3,7 @@ from discord.ext import commands
 from config import DISCORD_TOKEN
 import os
 import asyncio
+from datetime import datetime
 
 # Intents
 intents = discord.Intents.default()
@@ -10,6 +11,7 @@ intents.message_content = True
 
 # Bot (bez prefiksu - tylko slash komendy)
 bot = commands.Bot(command_prefix="!", intents=intents)
+bot.start_time = datetime.now()
 
 @bot.event
 async def on_ready():
