@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 from config import DISCORD_TOKEN, PREFIX
+import os
+import asyncio
 
 # Intents
 intents = discord.Intents.default()
@@ -13,6 +15,13 @@ bot = commands.Bot(command_prefix=PREFIX, intents=intents)
 async def on_ready():
     print(f"Bot zalogowany jako {bot.user}")
     print(f"Bot ID: {bot.user.id}")
+    
+    # Synchronizuj slash komendy
+    try:
+        synced = await bot.tree.sync()
+        print(f"✅ Zsynchronizowano {len(synced)} slash komend")
+    except Exception as e:
+        print(f"❌ Błąd przy synchronizacji: {e}")
 
 # Załaduj cogs
 async def load_cogs():
@@ -27,6 +36,4 @@ async def main():
         await bot.start(DISCORD_TOKEN)
 
 if __name__ == "__main__":
-    import asyncio
-    import os
     asyncio.run(main())

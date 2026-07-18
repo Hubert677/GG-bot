@@ -53,24 +53,34 @@ python main.py
 
 ## Komendy
 
-### 📌 Ogólne
+### � Prefix Komendy (!)
+
+#### 📌 Ogólne
 - `!ping` - Sprawdź latencję bota
 - `!help` - Pokaż listę wszystkich komend
 - `!info` - Informacje o bocie
 
-### 🎫 Tickety
+#### 🎫 Tickety
 - `!create-ticket [powód]` - Stwórz nowy ticket
 - `!close-ticket` - Zamknij ticket **(ADMIN)**
 
-### 👋 Powitania/Pożegnania
+#### 👋 Powitania/Pożegnania
 - `!set-welcome [wiadomość]` - Ustaw wiadomość powitania **(ADMIN)**
 - `!set-goodbye [wiadomość]` - Ustaw wiadomość pożegnania **(ADMIN)**
 
-### 🔨 Moderacja
+#### 🔨 Moderacja
 - `!ban @user [powód]` - Zbanuj użytkownika **(ADMIN)**
 - `!kick @user [powód]` - Wyrzuć użytkownika **(ADMIN)**
 - `!warn @user [powód]` - Ostrzeż użytkownika **(ADMIN)**
 - `!clear [ilość]` - Usuń wiadomości **(ADMIN)**
+
+### ⚡ Slash Komendy (/)
+
+- `/ping` - Sprawdź latencję bota
+- `/user [użytkownik]` - Informacje o użytkowniku
+- `/server` - Informacje o serwerze
+- `/avatar [użytkownik]` - Pokaż avatar użytkownika
+- `/stats` - Statystyki serwera
 
 ## Struktura projektu
 
@@ -81,6 +91,7 @@ python main.py
 ├── cogs/                        # Folder z komendami
 │   ├── ping.py                  # Komenda ping
 │   ├── info.py                  # Komendy help, info
+│   ├── slash_commands.py        # Slash komendy (/)
 │   ├── welcome.py               # Powitania/Pożegnania
 │   ├── tickets.py               # System ticketów
 │   └── moderation.py            # Ban, kick, warn, clear
