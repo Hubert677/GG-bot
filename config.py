@@ -6,8 +6,7 @@ load_dotenv()
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 
 if not DISCORD_TOKEN:
-    raise ValueError(
-        "❌ DISCORD_TOKEN nie jest ustawiony!\n"
-        "Na Render: ustaw zmienną w Environment Variables\n"
-        "Lokalnie: utwórz plik .env z DISCORD_TOKEN=twoj_token"
-    )
+    print("⚠️  OSTRZEŻENIE: DISCORD_TOKEN nie jest ustawiony!")
+    print("Bot się nie uruchomi bez tokenu")
+    # Nie wyrzucamy błędu - pozwolimy botowi się uruchomić dla debugowania
+    DISCORD_TOKEN = "placeholder"
