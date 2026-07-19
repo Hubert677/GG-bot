@@ -19,9 +19,8 @@ def run_flask():
     port = int(os.getenv("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=False)
 
-# Intents
+# Intents - bez privileged intents
 intents = discord.Intents.default()
-intents.message_content = True
 
 # Bot (bez prefiksu - tylko slash komendy)
 bot = commands.Bot(command_prefix="!", intents=intents)
