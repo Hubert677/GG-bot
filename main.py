@@ -4,6 +4,20 @@ from config import DISCORD_TOKEN
 import os
 import asyncio
 from datetime import datetime
+from flask import Flask
+from threading import Thread
+
+# Flask app dla Render health check
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+    return 'Bot is running!', 200
+
+def run_flask():
+    """Uruchom Flask na porcie 5000 (wymagane przez Render)"""
+    port = int(os.getenv("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
 
 # Intents
 intents = discord.Intents.default()
@@ -38,5 +52,11 @@ async def main():
         await bot.start(DISCORD_TOKEN)
 
 if __name__ == "__main__":
+    # Uruchom Flask w osobnym threadu
+    flask_thread = Thread(target=run_flask, daemon=True)
+    flask_thread.start()
+    print("Flask server uruchomiony na porcie 5000")
+    
+    # Uruchom Discord bota
     asyncio.run(main())
 
