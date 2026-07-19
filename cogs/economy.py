@@ -134,10 +134,6 @@ class Economy(commands.Cog):
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="buy", description="Kup przedmiot ze sklepu")
-    @app_commands.autocomplete(item=lambda interaction: [
-        app_commands.Choice(name=item_data["name"], value=item_id)
-        for item_id, item_data in self.SHOP_ITEMS.items()
-    ])
     async def buy(self, interaction: discord.Interaction, item: str):
         """Kup przedmiot"""
         if item not in self.SHOP_ITEMS:
