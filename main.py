@@ -49,7 +49,14 @@ async def load_cogs():
 async def main():
     async with bot:
         await load_cogs()
-        await bot.start(DISCORD_TOKEN)
+        # Tylko loguj jeśli token nie jest placeholder
+        if DISCORD_TOKEN != "placeholder":
+            await bot.start(DISCORD_TOKEN)
+        else:
+            print("❌ BŁĄD: Token jest placeholder - sprawdź ustawienia na Render!")
+            print("⏳ Flask server jest uruchomiony na porcie 5000")
+            # Czekaj nieskończenie aby Flask mógł działać
+            await asyncio.sleep(86400)
 
 if __name__ == "__main__":
     # Uruchom Flask w osobnym threadu
